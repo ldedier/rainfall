@@ -1,0 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   source.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/15 09:44:32 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/15 09:44:32 by ldedier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+// This program has to be a setuid program of user level1
+
+int main(int argc, char **argv)
+{
+	(void)argc;
+	(void)argv;
+
+	if (atoi(argv[1]) == 0x1A7)
+		system("sh");
+	else
+		printf("No !\n");
+	return (0);
+}

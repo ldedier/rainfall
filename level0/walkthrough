@@ -1,0 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   walkthrough                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/15 09:46:19 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/15 09:46:19 by ldedier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+gdb level0
+
+b main
+
+ 0x8048ec6 <main+6>:	sub    esp,0x20
+   0x8048ec9 <main+9>:	mov    eax,DWORD PTR [ebp+0xc]
+=> 0x8048ecc <main+12>:	add    eax,0x4
+   0x8048ecf <main+15>:	mov    eax,DWORD PTR [eax]
+   0x8048ed1 <main+17>:	mov    DWORD PTR [esp],eax
+   0x8048ed4 <main+20>:	call   0x8049710 <atoi>
+   0x8048ed9 <main+25>:	cmp    eax,0x1a7
+
+0x8048ed4 : we can see a atoi call with argv[1], this is why it crashed without arguments
+
+0x8048ed9 : we can see a cmp of this atoi result with 0x1a7 (423)
+
+./level0 423 => opens a new shell 
+
+whoami: => level01
+
+cat /home/user/level1/.pass => token
