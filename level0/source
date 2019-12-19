@@ -29,6 +29,6 @@ int main(int argc, char **argv)
 		execve("/bin/sh", &str);
 	}
 	else
-		fwrite("No !\n", 5, 1, stdout);
+		fwrite("No !\n", 1, 5, stdout);
 	return (0);
 }

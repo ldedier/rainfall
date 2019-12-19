@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   source                                             :+:      :+:    :+:   */
+/*   source.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/19 17:12:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/12/19 17:12:50 by ldedier          ###   ########.fr       */
+/*   Created: 2019/12/19 22:25:52 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/19 22:25:52 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
 
-void v(void)
+void o(void)
+{
+	system("/bin/sh");
+	exit(1);
+}
+
+void n(void)
 {
 	char *address;
 	char buff[0x218];
 
 	fgets(&buff[0x1], 0x200, stdin);
 	printf(&buff[0x1]);
-	address = 0x8048518;
-	if (*address == 0x40)
-	{
-		fwrite("Wait what?!\n", 1, 12, stdout);
-		system("/bin/sh");
-	}
+	exit(1);
 }
 
-int main(void)
+
+void main(void)
 {
-	v();
+	n();
 }

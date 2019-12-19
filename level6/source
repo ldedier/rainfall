@@ -1,0 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   source                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/19 23:55:58 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/19 23:55:58 by ldedier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+void n()
+{
+	system("/bin/cat /home/user/level7/.pass");
+}
+
+void m()
+{
+	puts("Nope");
+}
+
+int main(int argc, char **argv)
+{
+	void *s1;
+	void *s2;
+	void *func_ptr;
+
+	(void)argc;
+	s1 = malloc(64); //esp + 0x1c
+	s2 = malloc(4); // exp + 0x18
+
+	func_ptr = &m;
+
+	*s2 = func_ptr;
+	strcpy(s1, argv[1]);
+
+	void (*res)(void) = s2;
+	res();
+	return (0);
+}

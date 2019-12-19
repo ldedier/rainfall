@@ -1,0 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   source                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/19 10:32:33 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/19 10:32:33 by ldedier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+void p()
+{
+	// ebp + 4
+	//pushed ebp 
+	char rest[8]; //ebp - 8
+	char *address; // 4 bytes //ebp - 12
+	char tbl[92]; // ebp - 106
+
+	fflush(stdout);
+	gets(&tbl[30]); //ebp - 76 => (+ 80 characters => ebp + 4)
+	address = ebp + 4;
+	if (address & 0xb0000000)
+	{
+		printf("(%p)\n", address);
+	}
+	else
+	{
+		puts(&tbl[30]);
+		strdup(&tbl[30]);
+	}
+}
+
+void main(void)
+{
+	p();
+}

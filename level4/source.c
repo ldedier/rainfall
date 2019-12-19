@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   source                                             :+:      :+:    :+:   */
+/*   source.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/19 17:12:50 by ldedier           #+#    #+#             */
-/*   Updated: 2019/12/19 17:12:50 by ldedier          ###   ########.fr       */
+/*   Created: 2019/12/19 18:40:20 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/19 18:40:20 by ldedier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
+void p(char *str)
+{
+	printf(str);
+}
 
-void v(void)
+void n(void)
 {
 	char *address;
 	char buff[0x218];
 
-	fgets(&buff[0x1], 0x200, stdin);
-	printf(&buff[0x1]);
-	address = 0x8048518;
-	if (*address == 0x40)
-	{
-		fwrite("Wait what?!\n", 1, 12, stdout);
-		system("/bin/sh");
-	}
+	p(fgets(&buff[0x1], 0x200, stdin));
+	address = 0x8049810;
+	if (*address == 0x1025544)
+		system("/bin/cat /home/user/level5/.pass");
 }
 
-int main(void)
+void main(void)
 {
 	v();
 }
+
