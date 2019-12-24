@@ -1,0 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   source                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/24 15:58:35 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/24 15:58:35 by ldedier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+void p(char *str, char *str2)
+{
+	char read_buff[4120];
+
+	puts(str2);
+	
+	read(0, read_buff + 16, 4096);
+	
+	*strchr(read_buff + 16, '\n') = 0;
+
+	strncpy(str, read_buff + 16, 20);
+}
+
+void pp(char buffer[42])
+{
+	char buff2[80];
+
+	p(buff2 + 32, " - "); // copy up to buff2 + 52
+	p(buff2 + 52, " - "); // copy up to buff2 + 72
+
+	strcpy(buffer, buff2 + 32); // copy up to 40 bytes in buffer
+	strcat(buffer, " "); //add a 41th byte to buffer
+	strcat(buffer, buff2 + 52); // concatenate up to 20 bytes from buff2 to buffer
+	
+	// second read: main : buffer[63]
+	// able to override eip to system / argument of /bin/sh
+	// total of 42 + 20 = 62 bytes
+}
+
+void main(void)
+{
+	char buffer[64];
+
+	pp(&buffer[22]);
+
+	puts(&buffer[22]);
+
+	return (0);
+}

