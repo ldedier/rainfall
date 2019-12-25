@@ -1,0 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   source                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/25 22:31:37 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/25 22:31:37 by ldedier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int g_language = 0; // = *0x8049988
+
+void greetuser(char *username)
+{
+	char buffer[88];
+
+	if (val == 1)
+	{
+		strcpy(buffer + 16, "Hyvää päivää ");
+	}
+	else if (val == 2)
+	{
+		strcpy(buffer + 16, "Goedemiddag! ");
+	}
+	else if (val == 0)
+	{
+		strcpy(buffer + 16, "Hello ");
+	}
+	strcat(buffer + 16, username);
+	puts(buffer + 16);
+}
+
+void main(int argc, char **argv)
+{
+	char buffer[160];
+	char *str;
+
+	str = &buffer[156];
+
+	if (argc != 3)
+		return (1);
+	bzero(buffer + 80, 19 * 4); //80 -> 156 = 0
+	strncpy(buffer + 80, argv[1], 40); //copy up to buffer + 120 (40 chars)
+	strncpy(buffer + 120, argv[2], 32); //copy up to buffer + 152 (32 chars)
+
+	// buffer + 80 -> up to 62 chars
+
+	if (!(str = getenv("LANG")))
+		return (0);
+	if (memcmp(str, "fi", 2) == 0)
+		g_language = 1;
+	if (memcmp(str, "nl", 2) == 0)
+		g_language = 2;
+	memcpy(buffer, buffer + 80, 19 * 4);
+	//copied	buffer + 80 -> buffer + 156
+	//to		buffer		-> buffer + 76
+
+	// copied 76 first characters from buffer + 80 to buffer !
+	greetuser(buffer);
+}

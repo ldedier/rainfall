@@ -1,0 +1,13 @@
+
+only have to make the condition:
+	if (!strcmp(buffer + 24, argv[1]))
+get into the if
+
+To do so: 
+	
+	get a "" in argv[1]:
+		atoi("") = 0 then   buffer[24 + atoi(argv[1])] = buffer[24 + 0] = buffer[24] = 0
+		atoi(argv[1]) = buffer + 24
+
+		launch sh !!
+

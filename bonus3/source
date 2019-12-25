@@ -1,0 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   source                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldedier <ldedier@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/26 00:04:05 by ldedier           #+#    #+#             */
+/*   Updated: 2019/12/26 00:04:05 by ldedier          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+int main(int argc, char **argv)
+{
+	char buffer[160];
+	
+	*(FILE **)(buffer + 156) = fopen("/home/user/end/.pass", "r");
+
+	bzero(buffer + 24, 132); //=> fill with 0's from buffer + 24 to buffer + 156
+
+	if (!*(buffer + 156) || argc != 2)
+		return (-1);
+	
+	fread(buffer + 24, 1, 66, *(FILE **)buffer + 156);
+
+	// copy content of file from buffer + 24 to buffer + 90
+
+	buffer[89] = 0;
+
+	buffer[24 + atoi(argv[1])] = 0;
+
+	fread(*((void *)buffer + 90), 1, 65, *(FILE **)buffer + 156);
+
+	fclose(*(FILE **)buffer + 156);
+
+	if (!strcmp(buffer + 24, argv[1]))
+		execl("/bin/sh", "sh", NULL);
+
+	puts(buffer + 90);
+	return (0);
+}
